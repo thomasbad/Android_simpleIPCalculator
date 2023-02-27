@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#673AB7"
+    tools:context=".AboutActivity">
+
+    <TextView
+        android:id="@+id/aboutTV"
+        android:layout_width="348dp"
+        android:layout_height="271dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="65dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="How to use: \n\nJust input your IP and Subnet mask in the related column, then click calculate to do the calculation.\n\nDouble check if the result windows alert you invalid data is inputted.\n\nClick Reset Button to clear the input and result."
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="293dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="100dp"
+        android:backgroundTint="#2196F3"
+        android:text="Back"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+</androidx.constraintlayout.widget.ConstraintLayout>
