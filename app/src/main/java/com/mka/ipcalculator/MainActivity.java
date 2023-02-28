@@ -58,18 +58,17 @@ public class MainActivity extends AppCompatActivity {
                     int[] netmaskArr = calculateNetmask(subnetArr);
                     int[] networkArr = calculateNetwork(ipArr, netmaskArr);
                     int[] wildcardArr = calculateWildcard(netmaskArr);
-                    int maxHosts = calculateMaxHosts(subnetArr);
-                    int minHosts = calculateMinHosts(subnetArr);
+                    int hostsNet = calculateHostsFinal(subnetArr);
                     //Show result
                     String result = "Class:     " + getIpClass(ipArr) +
                             "\nIP Range:    " + (toIpString(networkArr)) + " - " + toIpString(calculateBroadcast(networkArr, wildcardArr)) +
-                            "\nMax Hosts:   " + maxHosts +
-                            "\nMin Hosts:   " + minHosts +
-                            "\nBroadcast Address:     " + toIpString(calculateBroadcast(networkArr, wildcardArr)) +
                             "\nNetwork Address:     " + toIpString(networkArr) +
-                            "\nWildcard Address:    " + toIpString(wildcardArr);
+                            "\nBroadcast Address:     " + toIpString(calculateBroadcast(networkArr, wildcardArr)) +
+                            "\nWildcard Address:    " + toIpString(wildcardArr) +
+                            "\nHosts/Net:   " + hostsNet;
 
                     resultText.setText(result);
+
                 } else {
                     //return error to user if invalid ip or subnet is inputted
                     resultText.setText("Invalid IP or subnet mask.");
@@ -205,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Calculate the maximum hosts allow in this network
-    private int calculateMaxHosts(int[] subnetArr) {
+    private int calculateHosts1(int[] subnetArr) {
         int mask = 0;
 
         for (int i = 0; i < subnetArr.length; i++) {
@@ -215,8 +214,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Calculate the minimum hosts require in this network
-    private int calculateMinHosts(int[] subnetArr) {
-        return (int) Math.pow(2, calculateMaxHosts(subnetArr)) - 2;
+    private int calculateHostsFinal(int[] subnetArr) {
+        return (int) Math.pow(2, calculateHosts1(subnetArr)) - 2;
     }
 
     //Calculate the broadcast address of this network
