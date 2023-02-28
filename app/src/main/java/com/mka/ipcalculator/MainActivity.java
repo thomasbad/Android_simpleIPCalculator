@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
                             "\nNetwork Address:     " + toIpString(networkArr) +
                             "\nBroadcast Address:     " + toIpString(calculateBroadcast(networkArr, wildcardArr)) +
                             "\nWildcard Address:    " + toIpString(wildcardArr) +
-                            "\nHosts/Net:   " + hostsNet;
+                            "\nHosts/Net:   " + hostsNet +
+                            "\nCIDR:   " + netmaskToCIDR(subnetArr);
 
                     resultText.setText(result);
 
@@ -201,7 +202,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Calculate Hosts/Net count phase 2
     private int calculateHostsFinal(int[] subnetArr) {
-        return (int) Math.pow(2, calculateHosts1(subnetArr)) - 2;
+        int i = (int) Math.pow(2, calculateHosts1(subnetArr)) - 2;
+        if (i > 0){
+            return i;
+        }else {
+            return 1;
+        }
     }
 
     //Calculate the broadcast address of this network
@@ -212,5 +218,18 @@ public class MainActivity extends AppCompatActivity {
             result[i] = networkArr[i] | wildcardArr[i];
         }
         return result;
+    }
+
+    //Calculate CIDR
+    private static int netmaskToCIDR(int[] subnetArr) {
+        int cidr = 0;
+        for (int octet : subnetArr) {
+            int mask = 0x80;
+            while ((octet & mask) != 0) {
+                cidr++;
+                mask >>= 1;
+            }
+        }
+        return cidr;
     }
 }
