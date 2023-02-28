@@ -58,7 +58,7 @@
     <TextView
         android:id="@+id/result_text_view"
         android:layout_width="match_parent"
-        android:layout_height="211dp"
+        android:layout_height="400dp"
         android:text="Result Will Be Show Here"
         android:textSize="16sp" />
 

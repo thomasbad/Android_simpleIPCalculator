@@ -1,10 +1,13 @@
 package com.mka.ipcalculator;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     EditText ipText, subnetText;
     TextView resultText;
     Button calculateButton, resetButton, aboutButton, helpButton;
+    LinearLayout mainWindow; //set up layout for hide keyboard purpose
 
     //Assign variable with view elements
     @Override
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.reset_button);
         aboutButton = findViewById(R.id.about_button);
         helpButton = findViewById(R.id.help_button);
+        mainWindow = findViewById(R.id.mainWindow); //set up layout for hide keyboard purpose
 
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,9 +70,14 @@ public class MainActivity extends AppCompatActivity {
                             "\nBroadcast Address:     " + toIpString(calculateBroadcast(networkArr, wildcardArr)) +
                             "\nWildcard Address:    " + toIpString(wildcardArr) +
                             "\nHosts/Net:   " + hostsNet +
-                            "\nCIDR:   " + netmaskToCIDR(subnetArr);
+                            "\nCIDR:   " + netmaskToCIDR(subnetArr) +
+                            "\n\nIP Binary format:\n" + binaryIP(ipArr) +
+                            "\n\nNetmask Binary format\n" + binaryNetmask(subnetArr);
 
                     resultText.setText(result);
+                    //Hide soft Keyboard after button click to avoid the keyboard blocking the result view
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mainWindow.getWindowToken(), 0);
 
                 } else {
                     //return error to user if invalid ip or subnet is inputted
@@ -169,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     //Find the network address
     private int[] calculateNetwork(int[] ipArr, int[] netmaskArr) {
         int[] result = new int[4];
@@ -220,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //Calculate CIDR
+    //Convert netmask and calculate CIDR
     private static int netmaskToCIDR(int[] subnetArr) {
         int cidr = 0;
         for (int octet : subnetArr) {
@@ -232,4 +241,44 @@ public class MainActivity extends AppCompatActivity {
         }
         return cidr;
     }
+
+    //Convert IP to binary format
+    private static String binaryIP(int[] ipArr){
+        StringBuilder binaryIP = new StringBuilder();
+
+        for (int i = 0; i < 4; i++) {
+            String binary = Integer.toBinaryString(ipArr[i]);
+            while (binary.length() < 8) {
+                binary = "0" + binary;
+            }
+            binaryIP.append(binary);
+            if (i < 3) {
+                binaryIP.append(".");
+            }
+        }
+        String binaryIPString = binaryIP.toString();
+        return binaryIPString;
+    }
+
+    //Convert netmask to binary format
+    private static String binaryNetmask(int[] subnetArr){
+        StringBuilder binaryIP = new StringBuilder();
+
+        for (int i = 0; i < 4; i++) {
+            String binary = Integer.toBinaryString(subnetArr[i]);
+            while (binary.length() < 8) {
+                binary = "0" + binary;
+            }
+            binaryIP.append(binary);
+            if (i < 3) {
+                binaryIP.append(".");
+            }
+        }
+        String binaryNetmaskString = binaryIP.toString();
+        return binaryNetmaskString;
+    }
+
+
+
+
 }
