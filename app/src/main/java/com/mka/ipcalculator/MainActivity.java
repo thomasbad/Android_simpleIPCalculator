@@ -55,9 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 if (isValidIp(ip) && isValidSubnet(subnet)) {
                     int[] ipArr = toIntArray(ip);
                     int[] subnetArr = toIntArray(subnet);
-                    int[] netmaskArr = calculateNetmask(subnetArr);
-                    int[] networkArr = calculateNetwork(ipArr, netmaskArr);
-                    int[] wildcardArr = calculateWildcard(netmaskArr);
+                    int[] networkArr = calculateNetwork(ipArr, subnetArr);
+                    int[] wildcardArr = calculateWildcard(subnetArr);
                     int hostsNet = calculateHostsFinal(subnetArr);
                     //Show result
                     String result = "Class:     " + getIpClass(ipArr) +
@@ -168,20 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Find the netmask with the subnet
-    private int[] calculateNetmask(int[] subnetArr) {
-        int[] result = new int[4];
-        int mask = 0;
 
-        for (int i = 0; i < subnetArr.length; i++) {
-            mask |= (subnetArr[i] << (24 - 8 * i));
-        }
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = (mask >> (24 - 8 * i)) & 255;
-        }
-        return result;
-    }
 
     //Find the network address
     private int[] calculateNetwork(int[] ipArr, int[] netmaskArr) {
