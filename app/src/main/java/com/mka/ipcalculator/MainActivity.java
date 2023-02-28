@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    //Calculate the maximum hosts allow in this network
+    //Calculate Hosts/Net count phase 1
     private int calculateHosts1(int[] subnetArr) {
         int mask = 0;
 
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         return 32 - Integer.bitCount(mask);
     }
 
-    //Calculate the minimum hosts require in this network
+    //Calculate Hosts/Net count phase 2
     private int calculateHostsFinal(int[] subnetArr) {
         return (int) Math.pow(2, calculateHosts1(subnetArr)) - 2;
     }
